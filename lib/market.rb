@@ -38,10 +38,22 @@ class Market
   def total_inventory
     all_items.map do |item,amount|
       info_hash = {
-        quantity: amount, 
+        quantity: amount,
         vendors: vendors_that_sell(item)
       }
       [item, info_hash]
     end.to_h
+  end
+
+  def overstocked_items
+    all_items.find_all do |item,amount|
+      (amount > 50) && (vendors_that_sell(item).count > 1)
+    end.to_h.keys
+  end
+
+  def sorted_item_list
+    all_items.keys.map do |item|
+      item.name
+    end.sort
   end
 end
