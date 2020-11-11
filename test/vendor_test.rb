@@ -2,6 +2,7 @@ require "minitest/autorun"
 require "minitest/pride"
 require "./lib/vendor.rb"
 require "./lib/item.rb"
+require "mocha/minitest"
 
 class VendorTest < Minitest::Test
   def setup
@@ -36,5 +37,20 @@ class VendorTest < Minitest::Test
     @vendor.stock(@item1,25)
     @vendor.stock(@item2,12)
     assert_equal 47.25, @vendor.potential_revenue
+  end
+
+  def test_it_has_restock_times
+    t1 = Time.at(628232401)
+    Time.stubs("new").returns(t1)
+    @vendor.stock(@item1,30)
+    t2 = Time.at(628232403)
+    Time.stubs("new").returns(t2)
+    @vendor.stock(@item1,25)
+    @vendor.stock(@item2,12)
+    expected = {
+      @item1 => t1,
+      @item2 => t2,
+    }
+    assert_equal expected, @vendor.restock_times
   end
 end

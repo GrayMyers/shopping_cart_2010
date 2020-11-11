@@ -1,8 +1,9 @@
 class Vendor
-  attr_reader :name, :inventory
+  attr_reader :name, :inventory, :restock_times
   def initialize(name)
     @name = name
     @inventory = Hash.new(0)
+    @restock_times = {}
   end
 
   def check_stock(item)
@@ -10,6 +11,9 @@ class Vendor
   end
 
   def stock(item, amount)
+    if @inventory[item] == 0
+      @restock_times[item] = Time.new
+    end
     @inventory[item] += amount
   end
 
