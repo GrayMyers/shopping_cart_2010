@@ -3,7 +3,7 @@ require "minitest/pride"
 require "./lib/vendor.rb"
 require "./lib/item.rb"
 
-class Test < Minitest::Test
+class VendorTest < Minitest::Test
   def setup
     @vendor = Vendor.new("Rocky Mountain Fresh")
     @item1 = Item.new({name: 'Peach', price: "$0.75"})
