@@ -17,4 +17,9 @@ class ItemTest < Minitest::Test
   def test_it_has_price
     assert_equal 0.75, @item1.price
   end
+
+  def test_it_can_convert_price
+    assert_equal 0.5, @item1.convert_price("$0.5")
+    assert_equal 3.0, @item1.convert_price("$3.00")
+  end
 end
