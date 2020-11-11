@@ -137,4 +137,20 @@ class MarketTest < Minitest::Test
     assert_equal 40, @vendor3.check_stock(@item1) #vendor2 first because vendor1 restocked from 0, resetting the time
 
   end
+
+  def test_first_vendor
+    @market.add_vendor(@vendor1)
+    @market.add_vendor(@vendor2)
+    @market.add_vendor(@vendor3)
+    assert_equal @vendor1, @market.first_vendor(@item1)
+    assert_equal @vendor2, @market.first_vendor(@item3)
+  end
+
+  def test_not_enough
+    @market.add_vendor(@vendor1)
+    @market.add_vendor(@vendor2)
+    @market.add_vendor(@vendor3)
+    refute @market.not_enough(@item1,10)
+    assert @market.not_enough(@item1,1000)
+  end
 end
