@@ -34,4 +34,14 @@ class Market
     end
     all_item_hash
   end
+
+  def total_inventory
+    all_items.map do |item,amount|
+      info_hash = {
+        quantity: amount, 
+        vendors: vendors_that_sell(item)
+      }
+      [item, info_hash]
+    end.to_h
+  end
 end
