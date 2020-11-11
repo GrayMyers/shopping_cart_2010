@@ -53,4 +53,33 @@ class VendorTest < Minitest::Test
     }
     assert_equal expected, @vendor.restock_times
   end
+
+  def test_it_can_sell
+    t1 = Time.at(628232401)
+    Time.stubs("new").returns(t1)
+    @vendor.stock(@item1,25)
+
+    t2 = Time.at(628232403)
+    Time.stubs("new").returns(t2)
+    @vendor.stock(@item2,12)
+
+    assert_equal true, @vendor.restock_times[@item1] < @vendor.restock_times[@item2]
+
+    assert_equal 25, @vendor.sell(@item1,50)
+    assert_equal 10, @vendor.sell(@item2,10)
+
+    assert_equal 0, @vendor.check_stock(@item1)
+    assert_equal 2, @vendor.check_stock(@item2)
+
+    t3 = Time.at(628232405)
+    Time.stubs("new").returns(t3)
+    @vendor.stock(@item1,1)
+
+    t4 = Time.at(628232408)
+    Time.stubs("new").returns(t4)
+    @vendor.stock(@item2,1)
+
+    assert_equal false, @vendor.restock_times[@item1] < @vendor.restock_times[@item2]
+
+  end
 end

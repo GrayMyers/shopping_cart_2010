@@ -22,4 +22,16 @@ class Vendor
       item.price * amount
     end
   end
+
+  def sell(item,amount)
+    stock = check_stock(item)
+    if amount >= stock
+      @restock_times.delete(item)
+      @inventory.delete(item)
+      stock
+    else
+      @inventory[item] -= amount
+      amount
+    end
+  end
 end
