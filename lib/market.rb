@@ -20,4 +20,18 @@ class Market
       vendor.check_stock(item) > 0
     end
   end
+
+  def total_inventory
+
+  end
+
+  def all_items
+    all_item_hash = Hash.new(0)
+    @vendors.each do |vendor|
+      vendor.inventory.each do |item,amount|
+        all_item_hash[item] += amount
+      end
+    end
+    all_item_hash
+  end
 end
