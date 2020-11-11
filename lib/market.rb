@@ -14,4 +14,10 @@ class Market
       vendor.name
     end
   end
+
+  def vendors_that_sell(item)
+    @vendors.find_all do |vendor|
+      vendor.check_stock(item) > 0
+    end
+  end
 end
