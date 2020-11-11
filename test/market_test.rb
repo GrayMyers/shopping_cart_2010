@@ -111,4 +111,30 @@ class MarketTest < Minitest::Test
     @market.add_vendor(@vendor3)
     assert_equal (["Banana Nice Cream", "Peach", "Peach-Raspberry Nice Cream", "Tomato"]), @market.sorted_item_list
   end
+
+  def test_it_can_sell
+    @market.add_vendor(@vendor1)
+    @market.add_vendor(@vendor2)
+    @market.add_vendor(@vendor3)
+    assert_equal 35, @vendor1.check_stock(@item1)
+    assert_equal 65, @vendor3.check_stock(@item1)
+
+    assert @market.sell(@item1, 40)
+
+    assert_equal 0, @vendor1.check_stock(@item1) #vendor1 first because the item was listed there first
+    assert_equal 60, @vendor3.check_stock(@item1)
+
+    @vendor1.stock(@item1,10)
+
+    assert @market.sell(@item1, 20)
+
+    assert_equal 10, @vendor1.check_stock(@item1)
+    assert_equal 40, @vendor3.check_stock(@item1) #vendor2 first because vendor1 restocked from 0, resetting the time
+
+    refute @market.sell(@item1, 600)
+
+    assert_equal 10, @vendor1.check_stock(@item1)
+    assert_equal 40, @vendor3.check_stock(@item1) #vendor2 first because vendor1 restocked from 0, resetting the time
+
+  end
 end

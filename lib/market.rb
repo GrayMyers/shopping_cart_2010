@@ -56,4 +56,28 @@ class Market
       item.name
     end.sort
   end
+
+  def sell(item,amount)
+    if not_enough(item,amount)
+      return false
+    end
+    amount_to_sell = amount
+    until amount_to_sell == 0 do
+      first = first_vendor(item)
+      stock = first.check_stock(item)
+      amount_sold = first.sell(item,amount_to_sell) #set amount_sold to result of sale
+      amount_to_sell -= amount_sold
+    end
+    true
+  end
+
+  def first_vendor(item)
+    vendors_that_sell(item).min_by do |vendor|
+      vendor.restock_times[item]
+    end
+  end
+
+  def not_enough(item,amount)
+    all_items[item] < amount
+  end
 end
